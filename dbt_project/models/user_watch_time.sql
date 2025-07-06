@@ -1,8 +1,8 @@
+-- models/user_watch_time.sql
 SELECT
     u.user_id,
     u.name,
-    SUM(c.duration_minutes) AS total_watch_time_minutes
+    SUM(wh.duration_minutes) AS total_watch_time
 FROM {{ ref('watch_history') }} wh
-JOIN {{ ref('users_data') }} u ON wh.user_id = u.user_id
-JOIN {{ ref('content') }} c ON wh.content_id = c.content_id
+JOIN {{ ref('transformed_users') }} u ON u.user_id = wh.user_id
 GROUP BY u.user_id, u.name
